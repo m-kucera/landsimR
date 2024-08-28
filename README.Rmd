@@ -1,0 +1,49 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# landsimR
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+The goal of landsimR is to allow simple yet ...
+
+## Installation
+
+You can install the development version of landsimR like so:
+
+``` r
+install_github('')
+```
+
+## Basic Virtual Landscape Creation
+
+
+```{r example}
+library(landsimR)
+landscape = create_landscape()
+```
+
+
+You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date. `devtools::build_readme()` is handy for this.
+
+Plot of `landscape`:
+
+```{r pressure, echo = FALSE, message = FALSE}
+library(terra)
+plot(rast(landscape))
+```
+
+In that case, don't forget to commit and push the resulting figure files, so they display on GitHub and CRAN.
