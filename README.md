@@ -13,14 +13,14 @@ The goal of landsimR is to allow simple yet …
 You can install the development version of landsimR like so:
 
 ``` r
-install_github('')
+install_github('m-kucera/landsimR')
 ```
 
 ## Basic Virtual Landscape Creation
 
 ``` r
 library(landsimR)
-landscape = create_landscape()
+landscape = create_landscape(c(100, 100), c(.1, .1, .1), c(.3, .3, .3))
 ```
 
 You’ll still need to render `README.Rmd` regularly, to keep `README.md`
