@@ -11,14 +11,15 @@ make_noise <- function(dim, f){
 
 #' if side = 0: noise > q; if side = 1: noise < q
 #' @noRd
-classify_noise <- function(noise, q, side = 0){
+classify_noise <- function(noise, q, side = 1){
   th = stats::quantile(noise, q)
 
   if (length(q) == 1){
-    classified = (noise < q) == side
+    classified = (noise < th) == side
   } else {
-    classified = (noise > q[1] & noise < q[2])
+    classified = (noise > th[1] & noise < th[2])
   }
+
   return(classified)
 }
 

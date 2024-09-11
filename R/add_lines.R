@@ -79,11 +79,15 @@ filter_patches <- function(patches, f, desc = T){
 #' @noRd
 connect_patches <- function(patches, dim){
 
-  network <- sf::st_sf(geometry = sf::st_sfc(lapply(1:nrow(patches), function(x) sf::st_geometrycollection())))
+  #network <- sf::st_sf(geometry = sf::st_sfc(lapply(1:nrow(patches), function(x) sf::st_geometrycollection())))
 
   # Initial line to edge of landscape
-  network[1,] <- sf::st_nearest_points(patches[1,], sf::st_point(c(sample(c(1, dim[1]), 1), sample(c(1, dim[2]), 1)))) |>
+  #network[1,] <- sf::st_nearest_points(patches[1,], sf::st_point(c(sample(c(1, dim[1]), 1), sample(c(1, dim[2]), 1)))) |>
+    #sf::st_as_sf()
+
+  network <- sf::st_nearest_points(patches[1,], sf::st_point(c(sample(c(1, dim[1]), 1), sample(c(1, dim[2]), 1)))) |>
     sf::st_as_sf()
+
 
   # Create Network func
   for (i in 2:nrow(patches)){
@@ -94,13 +98,23 @@ connect_patches <- function(patches, dim){
     # network <- rbind(network, n) |>
     #   sf::st_union()
 
-    network[i,] <- sf::st_nearest_points(patches[i,], network) |>
+    #network[i,] <- sf::st_nearest_points(patches[i,], network) |>
+      #sf::st_union() |>
+      #sf::st_sf()
+
+    line <- sf::st_nearest_points(patches[i,], network)
+
+    network = sf::st_union(network, line) |>
       sf::st_sf()
+
+
+    #plot(network)
+    #Sys.sleep(1)
   }
 
   # Rasterize func
   network <- network |>
-    sf::st_union()
+    sf::st_union() |>
     terra::vect() |>
     terra::rasterize(terra::rast(matrix(0, dim[1], dim[2]))) |>
     as.matrix(T)

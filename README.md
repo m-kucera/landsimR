@@ -6,29 +6,36 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of landsimR is to allow simple yet …
+The package landsimR aims to create virtual landscapes …
 
 ## Installation
 
-You can install the development version of landsimR like so:
+You can install the development version of landsimR using devtools:
 
 ``` r
-install_github('m-kucera/landsimR')
+devtools::install_github('m-kucera/landsimR')
 ```
 
 ## Basic Virtual Landscape Creation
 
 ``` r
 library(landsimR)
-landscape = create_landscape(c(100, 100), c(.1, .1, .1), c(.3, .3, .3))
+set.seed(1)
+landscape <- create_landscape(c(100, 100), c(.1, .1, .05), c(.5, .1, .3))
 ```
-
-You’ll still need to render `README.Rmd` regularly, to keep `README.md`
-up-to-date. `devtools::build_readme()` is handy for this.
 
 Plot of `landscape`:
 
-<img src="man/figures/README-pressure-1.png" width="100%" />
+<img src="man/figures/README-plot-landscape-1.png" width="100%" />
+Adding line features to `landscape`:
 
-In that case, don’t forget to commit and push the resulting figure
-files, so they display on GitHub and CRAN.
+``` r
+landscape2 <- add_lines(landscape, c(1, .025), c(F, .025), c(3, 0))
+#> Warning in
+#> st_cast.sf(dplyr::filter(sf::st_as_sf(terra::as.polygons(terra::rast(binary_matrix))),
+#> : repeating attributes for all sub-geometries for which they may not be
+#> constant
+plot(rast(landscape2), col = c('green', 'yellow', 'blue', 'orange', 'black', 'brown'))
+```
+
+<img src="man/figures/README-add-lines-1.png" width="100%" />
