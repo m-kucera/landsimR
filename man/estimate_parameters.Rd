@@ -4,10 +4,14 @@
 \alias{estimate_parameters}
 \title{Estimate Landscape Parameters}
 \usage{
-estimate_parameters(landscape)
+estimate_parameters(landscape, curve, line)
 }
 \arguments{
 \item{landscape}{\code{matrix} with integer values representing different land-cover classes}
+
+\item{curve}{\code{list} each element of the list contains a) class label and b) overlapping (polygon) classes}
+
+\item{line}{\code{list} each element of the list contains a) class label and b) connected (polygon) classes}
 }
 \value{
 estimation of parameters of the given landscape
@@ -16,5 +20,5 @@ estimation of parameters of the given landscape
 Used to get parameters for virtual landscape creation functions \code{create_landscape} and \code{add_lines}
 }
 \examples{
-estimate_parameters(matrix(sample(c(1,2,3), 10000), 100, 100))
+estimate_parameters(landscape, 5, 4)
 }

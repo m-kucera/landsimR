@@ -102,9 +102,13 @@ connect_patches <- function(patches, dim){
       #sf::st_union() |>
       #sf::st_sf()
 
-    line <- sf::st_nearest_points(patches[i,], network)
+    #line <- sf::st_nearest_points(patches[i,], network)
 
-    network = sf::st_union(network, line) |>
+    #network <- sf::st_union(network, line) |>
+      #sf::st_sf()
+
+    network <- sf::st_nearest_points(patches[i,], network) |>
+      sf::st_union(network) |>
       sf::st_sf()
 
 

@@ -25,27 +25,75 @@ The package landsimR aims to create virtual landscapes ...
 You can install the development version of landsimR using devtools:
 
 ``` r
-devtools::install_github('m-kucera/landsimR')
+library(devtools)
+install_github('m-kucera/landsimR')
 ```
 
+
 ## Basic Virtual Landscape Creation
-
-
 ```{r example}
 library(landsimR)
 set.seed(1)
 landscape <- create_landscape(c(100, 100), c(.1, .1, .05), c(.5, .1, .3))
 ```
 
-Plot of `landscape`:
 
-```{r plot-landscape, echo = FALSE, message = FALSE}
-library(terra)
-plot(rast(landscape))
-```
 Adding line features to `landscape`:
-
-```{r add-lines}
-landscape2 <- add_lines(landscape, c(1, .025), c(F, .025), c(3, 0))
-plot(rast(landscape2), col = c('green', 'yellow', 'blue', 'orange', 'black', 'brown'))
+```{r add-lines, warning = FALSE}
+landscape <- add_lines(landscape, c(1, .025), c(F, .025), c(3, 0))
 ```
+
+
+Plot the `landscape` using `image()`
+```{r landscape-image}
+image(landscape, axes = F)
+```
+
+
+Convert `landscape` to `LandscapeObj` class
+```{r LandscapeObj-class}
+landscape <- LandscapeObj(landscape, c(1,1,1,1,2,3))
+
+class(landscape)
+```
+
+
+View the structure of `landscape`
+```{r LandscapeObj-str}
+str(landscape)
+```
+
+Use generic `plot()` function for `LandscapeObj`
+```{r generic-plot}
+plot(landscape, axes = F)
+```
+
+Random parameter `landscape`
+```{r random-landscape}
+set.seed(0)
+random_landscape <- create_landscape(c(100, 100), c(runif(1, 0.005, .01), runif(1, .001, .1), runif(1, .005, .05)), c(runif(1, 0, .1), runif(1, 0.05, .25), runif(1, 0.5, .9))) |> 
+  add_lines(c(1, runif(1, .025, .1)), c(F, .05), c(2, 3))
+```
+
+
+Plot the random landscape using `image()`
+```{r random-landscape-image}
+image(random_landscape, col = c('green', 'blue', 'orange', 'yellow', 'black', 'brown'), axes = F)
+```
+
+
+Estimate the input parameters of `landscape`
+```{r estimate-parameters, warning = F}
+parameters <- estimate_parameters(landsimR::landscape, 5, 4)
+
+estimated_landscape <- create_landscape(c(100, 100), parameters$poly$f[2:4], parameters$poly$q[2:4]) |>
+  add_lines((parameters$line$f), (parameters$line$q), c(3, 2)) |>
+  LandscapeObj(c(1,1,1,1,2,3))
+
+par(mfrow = c(1, 2))
+plot(landscape, col = c('green', 'blue', 'orange', 'yellow', 'black', 'brown'), axes = F, main = 'sample landscape')
+plot(estimated_landscape, col = c('green', 'blue', 'orange', 'yellow', 'black', 'brown'), axes = F, main = 'estimated landscape')
+```
+
+
+use `build_readme()`
