@@ -49,8 +49,8 @@ system.time({
         add_lines(c(parameters[['f_road']], parameters[['f_croft']]), c(parameters[['q_road']], parameters[['q_croft']]), c(parameters[['o_road']], parameters[['o_croft']]))
 
 # 3. calculate landscape characteristics (n, ar, arb, nb)
-      est1 <- .estimate(poly_landscape(L, c(0, 1, 2, 3)))
-      est2 <- .estimate((L == 5) * 1)
+      est1 <- estimate(poly_landscape(L, c(0, 1, 2, 3)))
+      est2 <- estimate((L == 5) * 1)
       result <- append(est1, list(est2[[length(est2)]]))
       result[[1]] <- list(ar = 0, np = 0, arb = 0, nb = 0)
       # for (j in 2:length(result)) {

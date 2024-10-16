@@ -32,9 +32,9 @@ estimate_parameters <- function(landscape, curve, line){
 
   estimation <- vector('list', length(classes))
 
-  estimation.poly <- .estimate(poly_landscape(landscape, classes[-which(classes %in% c(curve, line))]))
+  estimation.poly <- estimate(poly_landscape(landscape, classes[-which(classes %in% c(curve, line))]))
   estimation.curve <- sapply(curve, function(x) {
-                         list(.estimate((landscape == x) * 1)[[2]])
+                         list(estimate((landscape == x) * 1)[[2]])
                          })
 
   for (i in seq_along(estimation.poly)) {
@@ -148,8 +148,8 @@ estimate <- function(landscape){
   return(estimation)
 }
 
-#' @export
-.estimate <- estimate
+#' #' @export
+#' .estimate <- estimate
 
 
 #' #' @export
