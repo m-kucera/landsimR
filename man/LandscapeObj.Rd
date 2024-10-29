@@ -2,7 +2,7 @@
 % Please edit documentation in R/Landscape-class.R
 \name{LandscapeObj}
 \alias{LandscapeObj}
-\title{construct a \code{landsimR} landscape}
+\title{construct a \code{landsimR} landscape \code{LandscapeObj} type}
 \usage{
 LandscapeObj(landscape, classType)
 }

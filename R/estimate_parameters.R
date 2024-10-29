@@ -11,9 +11,26 @@
 #'
 #' @examples
 #' estimate_parameters(landscape, 5, 4)
-estimate_parameters <- function(landscape, curve, line){
-  # curve <- 5
-  # line <- 4
+estimate_parameters <- function(landscape, curve = NA, line = NA) {
+
+  binary_estimators <- landscapemetrics::calculate_lsm(terra::rast(landscape), metric = c('ent', 'joinent', 'condent'))$value
+
+
+  # if (is.na(curve)) {
+  #   ncurve <- as.integer(readline('Number of curve classes: '))
+  #   curve <- vector('numeric', ncurve)
+  #   for (n in 1:ncurve) {
+  #     curve[n] <- as.integer(readline(paste0('Curve ', n, ': ')))
+  #   }
+  # }
+  #
+  # if (is.na(line)) {
+  #   nline <- as.integer(readline('Number of line classes: '))
+  #   line <- vector('numeric', nline)
+  #   for (n in 1:nline) {
+  #     line[n] <- as.integer(readline(paste0('Line ', n, ': ')))
+  #   }
+  # }
 
   estimator <- landsimR::estimator
 
@@ -56,14 +73,14 @@ estimate_parameters <- function(landscape, curve, line){
   for (i in classes) {
     ind <- which(classes == i)
     if (i %in% curve) {
-      f[ind] <- as.numeric(estimator[[2]]$f[1]) * as.numeric(estimation[[ind]][['ar']]) + as.numeric(estimator[[2]]$f[2]) * as.numeric(estimation[[ind]][['n']]) + as.numeric(estimator[[2]]$f[3]) * as.numeric(estimation[[ind]]['arb']) + as.numeric(estimator[[2]]$f[4]) * as.numeric(estimation[[ind]][['nb']])
-      q[ind] <- as.numeric(estimator[[2]]$q[1]) * as.numeric(estimation[[ind]][['ar']]) + as.numeric(estimator[[2]]$q[2]) * as.numeric(estimation[[ind]][['n']]) + as.numeric(estimator[[2]]$q[3]) * as.numeric(estimation[[ind]]['arb']) + as.numeric(estimator[[2]]$q[4]) * as.numeric(estimation[[ind]][['nb']])
+      f[ind] <- as.numeric(estimator[[2]]$f[1]) * as.numeric(estimation[[ind]][['ar']]) + as.numeric(estimator[[2]]$f[2]) * as.numeric(estimation[[ind]][['n']]) + as.numeric(estimator[[2]]$f[3]) * as.numeric(estimation[[ind]]['arb']) + as.numeric(estimator[[2]]$f[4]) * as.numeric(estimation[[ind]][['nb']]) + as.numeric(binary_estimators[1]) * as.numeric(estimator[[2]]$f[5]) + as.numeric(binary_estimators[2]) * as.numeric(estimator[[2]]$f[6]) # + as.numeric(binary_estimators[3]) * as.numeric(estimator[[2]]$f[7])
+      q[ind] <- as.numeric(estimator[[2]]$q[1]) * as.numeric(estimation[[ind]][['ar']]) + as.numeric(estimator[[2]]$q[2]) * as.numeric(estimation[[ind]][['n']]) + as.numeric(estimator[[2]]$q[3]) * as.numeric(estimation[[ind]]['arb']) + as.numeric(estimator[[2]]$q[4]) * as.numeric(estimation[[ind]][['nb']]) + as.numeric(binary_estimators[1]) * as.numeric(estimator[[2]]$q[5]) + as.numeric(binary_estimators[2]) * as.numeric(estimator[[2]]$q[6]) # + as.numeric(binary_estimators[3]) * as.numeric(estimator[[2]]$q[7])
     } else if (i %in% line) {
       f[ind] <- 1 # should be an estimation of the proportion of connected patches use n from the real landscape f = n.real
       q[ind] <- F
     } else {
-      f[ind] <- as.numeric(estimator[[1]]$f[1]) * as.numeric(estimation[[ind]][['ar']]) + as.numeric(estimator[[1]]$f[2]) * as.numeric(estimation[[ind]][['n']]) + as.numeric(estimator[[1]]$f[3]) * as.numeric(estimation[[ind]]['arb']) + as.numeric(estimator[[1]]$f[4]) * as.numeric(estimation[[ind]][['nb']])
-      q[ind] <- as.numeric(estimator[[1]]$q[1]) * as.numeric(estimation[[ind]][['ar']]) + as.numeric(estimator[[1]]$q[2]) * as.numeric(estimation[[ind]][['n']]) + as.numeric(estimator[[1]]$q[3]) * as.numeric(estimation[[ind]]['arb']) + as.numeric(estimator[[1]]$q[4]) * as.numeric(estimation[[ind]][['nb']])
+      f[ind] <- as.numeric(estimator[[1]]$f[1]) * as.numeric(estimation[[ind]][['ar']]) + as.numeric(estimator[[1]]$f[2]) * as.numeric(estimation[[ind]][['n']]) + as.numeric(estimator[[1]]$f[3]) * as.numeric(estimation[[ind]]['arb']) + as.numeric(estimator[[1]]$f[4]) * as.numeric(estimation[[ind]][['nb']]) + as.numeric(binary_estimators[1]) * as.numeric(estimator[[1]]$f[5]) + as.numeric(binary_estimators[2]) * as.numeric(estimator[[1]]$f[6]) # + as.numeric(binary_estimators[3]) * as.numeric(estimator[[1]]$f[7])
+      q[ind] <- as.numeric(estimator[[1]]$q[1]) * as.numeric(estimation[[ind]][['ar']]) + as.numeric(estimator[[1]]$q[2]) * as.numeric(estimation[[ind]][['n']]) + as.numeric(estimator[[1]]$q[3]) * as.numeric(estimation[[ind]]['arb']) + as.numeric(estimator[[1]]$q[4]) * as.numeric(estimation[[ind]][['nb']]) + as.numeric(binary_estimators[1]) * as.numeric(estimator[[1]]$q[5]) + as.numeric(binary_estimators[2]) * as.numeric(estimator[[1]]$q[6]) # + as.numeric(binary_estimators[3]) * as.numeric(estimator[[1]]$q[7])
     }
     # print(paste0('f: ', f[ind], ', q: ', q[ind]))
 
@@ -119,8 +136,21 @@ estimate_parameters <- function(landscape, curve, line){
 }
 
 
+# estimate_parameters <- function(landscape, ) {
+#
+# }
+
+
+#' @noRd
+get_estimation <- function(LandscapeObj) {
+
+  list()
+}
+
+
 #' @noRd
 estimate <- function(landscape){
+
   uniques <- as.integer(names(table(landscape)))
   estimation <- vector('list', length(uniques))
   arb <- 0
@@ -148,12 +178,14 @@ estimate <- function(landscape){
   return(estimation)
 }
 
+
 #' #' @export
 #' .estimate <- estimate
 
 
 #' #' @export
 #' .poly_landscape <- poly_landscape
+
 
 # can be replaced by find_patches_landscape (can run in parallel)
 #' @noRd
@@ -172,7 +204,7 @@ count_patches <- function(class){
 
 
 #' @noRd
-poly_landscape <- function(landscape, poly_classes){
+poly_landscape <- function(landscape, poly_classes, ...){
 
   landscape[!landscape %in% poly_classes] <- NA
 
@@ -181,7 +213,7 @@ poly_landscape <- function(landscape, poly_classes){
   for (x in 1:nrow(landscape)){
     for (y in 1:ncol(landscape)){
       if (is.na(landscape[x, y])){
-        landscape_copy[x, y] <- focal(landscape, x, y, 1)
+        landscape_copy[x, y] <- focal(landscape, x, y, ...)
       }
     }
   }

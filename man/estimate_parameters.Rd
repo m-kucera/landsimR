@@ -4,7 +4,7 @@
 \alias{estimate_parameters}
 \title{Estimate Landscape Parameters}
 \usage{
-estimate_parameters(landscape, curve, line)
+estimate_parameters(landscape, curve = NA, line = NA)
 }
 \arguments{
 \item{landscape}{\code{matrix} with integer values representing different land-cover classes}

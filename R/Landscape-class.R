@@ -1,4 +1,4 @@
-#' construct a `landsimR` landscape
+#' construct a `landsimR` landscape `LandscapeObj` type
 #'
 #' @description
 #' A short description...

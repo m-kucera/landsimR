@@ -74,9 +74,12 @@ poly_landscape2 <- function(landscape, poly_classes){
 
 
 #' @noRd
-focal <- function(matrix, position_x, position_y, size){
+focal <- function(matrix, position_x, position_y, size = 1, not = NA) {
+
+  matrix[matrix == not] <- NA
+
   zone <- vector('integer')
-  while (length(which(table(zone) == max(table(zone)))) != 1){
+  while ((length(which(table(zone) == max(table(zone)))) != 1)) {
     min_x <- ifelse(position_x - size < 0, 0, position_x - size)
     max_x <- ifelse(position_x + size > nrow(matrix), nrow(matrix), position_x + size)
     min_y <- ifelse(position_y - size < 0, 0, position_y - size)

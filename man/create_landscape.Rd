@@ -16,12 +16,11 @@ create_landscape(dim, f, q, scale = c(res = 1, mmu = 1))
 \item{scale}{\code{vector} (of length 2) \code{res} indicates resolution (size of one cell), \code{mmu} indicates perspective (thickness of the smallest line features) !NOT IMPLEMENTED YET!}
 }
 \value{
-\code{matrix} with integer class values
+\code{matrix} with integer class values, there will be between 1 and (n + 1) classes (n is the length of f and q vectors) depending on the input parameters (f and q)
 }
 \description{
 description ...
 }
 \examples{
-create_landscape
-create_landscape(c(100, 100), c(.1, .1, .1), c(.3, .3, .3))
+#' create_landscape(c(100, 100), c(.1, .1, .1), c(.3, .3, .3))
 }
