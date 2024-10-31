@@ -23,7 +23,7 @@ Suggests:
     rmarkdown,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
-URL: https://github.com/m-kucera/landsimR
+URL: https://github.com/m-kucera/landsimR, https://m-kucera.github.io/landsimR/
 BugReports: https://github.com/m-kucera/landsimR/issues
 Depends: 
     R (>= 2.10)

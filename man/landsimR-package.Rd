@@ -12,6 +12,7 @@ What the package does (one paragraph).
 Useful links:
 \itemize{
   \item \url{https://github.com/m-kucera/landsimR}
+  \item \url{https://m-kucera.github.io/landsimR/}
   \item Report bugs at \url{https://github.com/m-kucera/landsimR/issues}
 }
 
