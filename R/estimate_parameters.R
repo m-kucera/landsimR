@@ -183,10 +183,6 @@ estimate <- function(landscape){
 #' .estimate <- estimate
 
 
-#' #' @export
-#' .poly_landscape <- poly_landscape
-
-
 # can be replaced by find_patches_landscape (can run in parallel)
 #' @noRd
 count_patches <- function(class){
@@ -220,3 +216,7 @@ poly_landscape <- function(landscape, poly_classes, ...){
 
   return(landscape_copy)
 }
+
+
+#' @export
+.poly_landscape <- poly_landscape

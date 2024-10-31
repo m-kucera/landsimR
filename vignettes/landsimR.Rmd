@@ -1,0 +1,194 @@
+---
+title: "landsimR"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{landsimR}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Basic Virtual Landscape Creation:
+
+
+Create polygon (patch) `landscape` using `create_landscape()`
+```{r example, warning=FALSE}
+library(landsimR)
+
+set.seed(1)
+landscape <- create_landscape(
+  dim = c(100, 100),
+  f = c(.05, .05, .05),
+  q = c(.05, .2, .5)
+)
+
+colors <- c('green', 'blue', 'orange', 'yellow', 'black', 'brown')
+
+image(landscape, col = colors[1:4])
+```
+
+
+Add line features to `landscape` with `add_lines()`
+```{r add-lines, warning=FALSE}
+landscape <- add_lines(
+  landscape,
+  f = c(1, .025),
+  q = c(F, .025),
+  overlap = c(2, 3)
+)
+
+image(landscape, col = colors)
+```
+
+
+Convert `landscape` to `LandscapeObj` class
+```{r LandscapeObj-class}
+landscape <- LandscapeObj(
+  landscape,
+  classType = c(1,1,1,1,2,3)
+)
+
+class(landscape)
+```
+
+
+View `LandscapeObj`
+```{r LandscapeObj-view}
+landscape
+```
+
+
+View the structure of `LandscapeObj` 
+```{r LandscapeObj-str}
+str(landscape)
+```
+
+
+
+Use generic `plot()` function for `LandscapeObj`
+```{r generic-plot}
+plot(landscape, col = colors)
+```
+
+
+## Randomization:
+
+
+Use parameter randomization to create a random landscape 
+```{r random-landscape, warning=FALSE}
+set.seed(0)
+
+random_parameters <- list(
+  poly = list(
+  f = c(runif(1, 0.005, .01),
+        runif(1, .001, .1),
+        runif(1, .005, .05)
+        ),
+  q = c(runif(1, 0, .1),
+        runif(1, 0.05, .25),
+        runif(1, 0.5, .9)
+        )
+  ),
+  line = list(
+    f = c(1, runif(1, .025, .1)),
+    q = c(F, .05)
+  )
+)
+
+random_landscape <- create_landscape(
+  dim = c(100, 100),
+  f = random_parameters$poly$f,
+  q = random_parameters$poly$q
+)
+
+random_landscape <- random_landscape |> 
+  add_lines(
+    random_parameters$line$f,
+    random_parameters$line$q,
+    overlap = c(2, 3)
+)
+
+image(random_landscape, col = colors)
+```
+
+
+## Parameter estimation:
+
+
+Estimate the input parameters of the random landscape using `estimate_parameters()` function. The first (pink) class of `estimated_landscape` is leftover cells
+```{r estimate-parameters, warning = F}
+estimated_parameters <- estimate_parameters(
+  landscape = random_landscape,
+  curve = 5,
+  line = 4
+)
+
+estimated_landscape <- create_landscape(
+  dim = c(100, 100),
+  # f = parameters$poly$f[2:4],
+  # q = parameters$poly$q[2:4]
+  f = estimated_parameters$poly$f,
+  q = estimated_parameters$poly$q
+) 
+
+estimated_landscape <- estimated_landscape |>
+  add_lines(
+    f = (estimated_parameters$line$f),
+    q = (estimated_parameters$line$q),
+    # overlap = c(2, 3)
+    overlap = c(3, 4)
+)
+
+# par(mfrow = c(1, 2))
+# plot(random_landscape, col = c('green', 'blue', 'orange', 'yellow', 'black', 'brown'), axes = F, main = 'sample landscape')
+
+image(estimated_landscape, col = c('pink', colors))
+```
+
+
+Random parameters and estimation
+```{r parameter-values, echo=FALSE}
+df <- data.frame(
+  random = random_parameters |> unlist(),
+  estimated = (estimated_parameters |> unlist())[-c(1, 5)]
+)
+
+df$difference <- abs(df$random - df$estimated)
+df$parameter <- rownames(df)
+rownames(df) <- NULL
+
+knitr::kable(
+  df[, c(4, 1, 2, 3)],
+  align = 'c',
+  # format = 'latex',
+  # label = 'Parameters:',
+  # caption = 'popisek',
+  col.names = c('Parameter', 'Random', 'Estimated', 'Difference (abs)')
+)
+```
+
+
+Replace the leftover cells with the most common value around the cell
+```{r test-chunk, warning=FALSE, message=FALSE}
+# library(devtools)
+# devtools::load_all('~/landsimR/')
+
+estimated_landscape <- estimated_landscape |>
+  .poly_landscape(c(1:max(estimated_landscape)), not = 5)
+
+image(estimated_landscape, col = colors)
+```
+
+
+Side by side comparison of random and estimated
+```{r side-by-side}
+par(mfrow = c(1, 2))
+image(random_landscape, col = colors, main = 'Random')
+image(estimated_landscape, col = colors, main = 'Estimated')
+```
