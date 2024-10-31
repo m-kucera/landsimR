@@ -8,7 +8,13 @@
 
 The package `landsimR` aims to create virtual landscapes …
 
-[Getting Started](articles/landsimR.html)
+<!--
+&#10;[Getting Started](articles/landsimR.html)
+&#10;local path
+&#10;-->
+
+[Getting
+started](https://m-kucera.github.io/landsimR/articles/landsimR.html)
 
 ## Installation:
 

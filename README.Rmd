@@ -21,7 +21,15 @@ knitr::opts_chunk$set(
 
 The package `landsimR` aims to create virtual landscapes ...
 
+<!--
+
 [Getting Started](articles/landsimR.html)
+
+local path
+
+-->
+
+[Getting started](https://m-kucera.github.io/landsimR/articles/landsimR.html)
 
 ## Installation:
 
