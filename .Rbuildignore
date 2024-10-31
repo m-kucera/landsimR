@@ -6,3 +6,6 @@
 ^experimental-code$
 ^doc$
 ^Meta$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$

@@ -8,7 +8,7 @@
 
 The package `landsimR` aims to create virtual landscapes …
 
-The package is in development …
+[Getting Started](articles/landsimR.html)
 
 ## Installation:
 
