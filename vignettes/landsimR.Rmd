@@ -82,7 +82,9 @@ plot(landscape, col = colors)
 
 Use parameter randomization to create a random landscape 
 ```{r random-landscape, warning=FALSE}
-set.seed(0)
+
+seed <- 0
+set.seed(seed)
 
 random_parameters <- list(
   poly = list(
@@ -128,6 +130,16 @@ estimated_parameters <- estimate_parameters(
   curve = 5,
   line = 4
 )
+
+# for (i in seq_along(estimated_parameters)){
+#   for (j in seq_along(estimated_parameters[[i]])){
+#     for (k in seq_along(estimated_parameters[[i]][[j]])){
+#       if (estimated_parameters[[i]][[j]][k] < 0) {
+#         estimated_parameters[[i]][[j]][k] <- .0001
+#       }
+#     }
+#   }
+# }
 
 estimated_landscape <- create_landscape(
   dim = c(100, 100),

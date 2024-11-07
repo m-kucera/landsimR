@@ -165,7 +165,9 @@ estimate <- function(landscape){
     estimation[[i]] <- list('ar' = ar,
                             'n' = n_patches,
                             'arb' = arb,
-                            'nb' = nb
+                            'nb' = nb # ,
+                            # 'nrow' = nrow(landscape),
+                            # 'ncol' = ncol(landscape)
                             )
     arb <- arb + ar
     nb <- nb + n_patches
@@ -175,13 +177,29 @@ estimate <- function(landscape){
   # pri vetsim zastoupeni se bude jinak chovat vztah frekvence a prum. velikosti plosky
   # vztah nebude linearni, ale ??exponencialni??
 
-  return(estimation)
+
+
+  return(fix_negative(estimation))
 }
 
 
 #' #' @export
 #' .estimate <- estimate
 
+
+#' @noRd
+fix_negative <- function(estimated_parameters){
+  for (i in seq_along(estimated_parameters)){
+    for (j in seq_along(estimated_parameters[[i]])){
+      for (k in seq_along(estimated_parameters[[i]][[j]])){
+        if (estimated_parameters[[i]][[j]][k] < 0) {
+          estimated_parameters[[i]][[j]][k] <- .0001
+        }
+      }
+    }
+  }
+  estimated_parameters
+}
 
 # can be replaced by find_patches_landscape (can run in parallel)
 #' @noRd
