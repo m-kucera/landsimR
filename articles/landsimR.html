@@ -126,7 +126,9 @@
 </h2>
 <p>Use parameter randomization to create a random landscape</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span></span>
+<code class="sourceCode R"><span></span>
+<span><span class="va">seed</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="va">seed</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">random_parameters</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>  poly <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
@@ -173,6 +175,16 @@
 <span>  curve <span class="op">=</span> <span class="fl">5</span>,</span>
 <span>  line <span class="op">=</span> <span class="fl">4</span></span>
 <span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># for (i in seq_along(estimated_parameters)){</span></span>
+<span><span class="co">#   for (j in seq_along(estimated_parameters[[i]])){</span></span>
+<span><span class="co">#     for (k in seq_along(estimated_parameters[[i]][[j]])){</span></span>
+<span><span class="co">#       if (estimated_parameters[[i]][[j]][k] &lt; 0) {</span></span>
+<span><span class="co">#         estimated_parameters[[i]][[j]][k] &lt;- .0001</span></span>
+<span><span class="co">#       }</span></span>
+<span><span class="co">#     }</span></span>
+<span><span class="co">#   }</span></span>
+<span><span class="co"># }</span></span>
 <span></span>
 <span><span class="va">estimated_landscape</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/create_landscape.html">create_landscape</a></span><span class="op">(</span></span>
 <span>  dim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">100</span><span class="op">)</span>,</span>
