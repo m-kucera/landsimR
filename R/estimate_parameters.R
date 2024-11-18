@@ -143,7 +143,6 @@ estimate_parameters <- function(landscape, curve = NA, line = NA) {
 
 #' @noRd
 get_estimation <- function(LandscapeObj) {
-
   list()
 }
 

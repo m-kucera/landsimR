@@ -1,6 +1,6 @@
 #' @noRd
-find_patches_landscape <- function(landscape){
-  binary_matrix <- landscape == 2
+find_patches_landscape <- function(landscape, class){
+  binary_matrix <- landscape == class
   binary_matrix[binary_matrix == F] <- NA
   binary_matrix[binary_matrix == T] <- 0
 
@@ -37,6 +37,7 @@ find_patches_landscape <- function(landscape){
 
               # calculate other characteristics (edge, vertices, centroid, area, ...)
 
+              # dis is WRONG!
               if (lookup[1] < patch_minx){patch_minx <- lookup[1]}
               if (lookup[1] > patch_maxx){patch_maxx <- lookup[1]}
               if (lookup[2] < patch_miny){patch_miny <- lookup[2]}
