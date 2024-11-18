@@ -3,7 +3,7 @@ Title: Virtual landscape generator
 Version: 0.0.0.9000
 Authors@R: 
     person("Michael", "Kucera", , "kuceramichal@fzp.czu.cz", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
+           comment = c(ORCID = "https://orcid.org/0009-0000-4068-2577"))
 Description: Virtual landscape generator.
 License: file LICENSE
 Encoding: UTF-8
