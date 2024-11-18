@@ -4,9 +4,9 @@
 \name{landsimR-package}
 \alias{landsimR}
 \alias{landsimR-package}
-\title{landsimR: What the Package Does (One Line, Title Case)}
+\title{landsimR: Virtual landscape generator}
 \description{
-What the package does (one paragraph).
+Virtual landscape generator.
 }
 \seealso{
 Useful links:
@@ -18,7 +18,7 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: First Last \email{first.last@example.com} (\href{https://orcid.org/YOUR-ORCID-ID}{ORCID})
+\strong{Maintainer}: Michael Kucera \email{kuceramichal@fzp.czu.cz} (\href{https://orcid.org/YOUR-ORCID-ID}{ORCID})
 
 }
 \keyword{internal}
