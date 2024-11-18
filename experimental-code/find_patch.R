@@ -1,9 +1,30 @@
-find_patches <- function(landscape, class, viz = T){
+find_patches <- function(landscape, class, rule = 8){
   L <- landscape == class
   L[L == F] <- NA
   L[L == T] <- 0
   pi <- 0
   plist <- list()
+
+  if (rule == 8) { # Queen rule
+    nei <- list(c(-1, 1), c(0, 1),
+                c(1, 1), c(1, 0),
+                c(1, -1), c(0, -1),
+                c(-1, -1), c(-1, 0)
+    )
+
+    # 1 2 3
+    # 8 X 4
+    # 7 6 5
+
+  } else { # Rook rule: if (rule == 4)
+    nei <- list(c(1, 0), c(-1, 0), c(0, 1), c(0, -1))
+
+    # o 3 o
+    # 2 X 1
+    # o 4 o
+
+  }
+
   for (i in 1:nrow(L)) {
     for (j in 1:ncol(L)) {
       v <- L[i, j]
@@ -19,15 +40,9 @@ find_patches <- function(landscape, class, viz = T){
         mj <- j
         Mj <- j
         while (length(pc) != 0) {
-          for (n in 1:8){
-            lookup <- pc[[1]] - list(c(-1, 1), c(0, 1),
-                                     c(1, 1), c(1, 0),
-                                     c(1, -1), c(0, -1),
-                                     c(-1, -1), c(-1, 0)
-                                     )[[n]]
-            # 1 2 3
-            # 8 X 4
-            # 7 6 5
+          for (n in 1:rule){
+            lookup <- pc[[1]] - nei[[n]]
+
 
             if (0 %in% lookup |
                 lookup[1] > nrow(L) |
@@ -39,13 +54,13 @@ find_patches <- function(landscape, class, viz = T){
               if (lookup[2] > Mj) {Mj <- lookup[2]}
               if (lookup[2] < mj) {mj <- lookup[2]}
 
-              if (viz){
-                L[lookup[1], lookup[2]] <- -2
-                plot(rast(L))
-                Sys.sleep(.1)
-            }
+            #   if (viz){
+            #     L[lookup[1], lookup[2]] <- -2
+            #     plot(rast(L))
+            #     Sys.sleep(.1)
+            # }
               L[lookup[1], lookup[2]] <- pi
-              v <- pi
+              #v <- pi
               pc[[length(pc) + 1]] <- c(lookup[1], lookup[2])
 
               }
@@ -68,18 +83,40 @@ find_patches <- function(landscape, class, viz = T){
         )
 
       }
-      if (viz) {
-        L[i, j] <- -1
-        plot(rast(L))
-        L[i, j] <- v
-        Sys.sleep(.05)
-      }
+      # if (viz) {
+      #   L[i, j] <- -1
+      #   plot(rast(L))
+      #   L[i, j] <- pi
+      #   Sys.sleep(.05)
+      #   # plot(rast(L))
+      # }
     }
   }
-  if (viz) {plot(rast(L))}
+  # if (viz) {plot(rast(L))}
   return(list(L, plist))
 }
 
 L <- landsimR::landscape
+L <- L[21:40, 1:20]
 
-P <- find_patches(L, 3, F)
+library(terra)
+plot(rast(L==3))
+
+P <- find_patches(L, 3, 4)
+plot(as.factor(rast(P[[1]])))
+plot(as.factor(rast(P[[1]])), col = sample(rainbow(200), 88), legend = F, axes = F)
+
+rst <- as.factor(rast(P[[1]]))
+
+library(ggplot2)
+library(tidyterra)
+
+ggplot() +
+  geom_spatraster(data = rst) +
+  scale_color_grass_d(palette = 'deep') +
+  theme_minimal()
+
+ggplot() +
+  geom_spatraster(data = as.factor(rast(P[[2]][[10]]$patch))) +
+  scale_color_grass_d(palette = 'deep') +
+  theme_minimal()
