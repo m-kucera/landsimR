@@ -143,7 +143,25 @@ estimate_parameters <- function(landscape, curve = NA, line = NA) {
 
 #' @noRd
 get_estimation <- function(LandscapeObj) {
-  list()
+  classes <- as.integer(names(table(LandscapeObj$landscape)))
+
+  estimation <- vector('list', length(classes))
+
+
+
+  return(estimation)
+}
+
+
+#' @noRd
+estimate_polygon <- function() {
+  estimate(poly_landscape(landscape, ))
+}
+
+
+#' @noRd
+estimate_line <- function() {
+
 }
 
 

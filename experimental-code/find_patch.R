@@ -1,4 +1,6 @@
+#' @noRd
 find_patches <- function(landscape, class, rule = 8){
+
   L <- landscape == class
   L[L == F] <- NA
   L[L == T] <- 0
@@ -97,12 +99,13 @@ find_patches <- function(landscape, class, rule = 8){
 }
 
 L <- landsimR::landscape
-L <- L[21:40, 1:20]
+# L <- L[21:40, 1:20]
 
 library(terra)
-plot(rast(L==3))
-
-P <- find_patches(L, 3, 4)
+plot(terra::rast(L==3))
+system.time(
+  P <- find_patches(L, 3, 8)
+)
 plot(as.factor(rast(P[[1]])))
 plot(as.factor(rast(P[[1]])), col = sample(rainbow(200), 88), legend = F, axes = F)
 
@@ -117,6 +120,17 @@ ggplot() +
   theme_minimal()
 
 ggplot() +
-  geom_spatraster(data = as.factor(rast(P[[2]][[10]]$patch))) +
+  geom_spatraster(data = as.factor(rast(as.matrix(P[[2]][[10]]$patch)))) +
   scale_color_grass_d(palette = 'deep') +
   theme_minimal()
+
+b <- P[[2]][[10]]$bounds
+
+P2 <- find_patches(L, 3, 4)
+
+ggplot() +
+  geom_spatraster(data = as.factor(rast(as.matrix(P2[[1]][b[1]:b[2], b[3]:b[4]])))) +
+  scale_color_grass_d(palette = 'deep') +
+  theme_minimal()
+
+
